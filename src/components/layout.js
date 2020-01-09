@@ -4,16 +4,20 @@ import styled from 'styled-components'
 
 const Layout = (props) => {
     return (
-        <Container>
-            <Navbar />
-            {props.children}
-        </Container>
+        <>
+            <Navbar/>
+            <Container>
+                {props.children}
+            </Container>
+        </>
     )
 };
 
 const Container = styled.div`
     background: #fff;
-    margin: auto
+    margin: auto;
+    padding: 10px;
+    max-width: 1200px;
 `;
 
 export default Layout
