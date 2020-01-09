@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import Layout from './layout'
 import axios from "axios";
 import TaskList from './TaskList'
+import AddTask from './AddTask'
 
 
 const UserPage = (props) => {
@@ -19,14 +20,19 @@ const UserPage = (props) => {
     const [newUsername, setNewUsername] = useState('');
     const [tasks, setTasks] = useState(null);
 
-    useState(() => {
+    useEffect(() => {
         axios.get(url)
             .then(res => {
                 setUser(res.data);
-                console.log(res.data)
+                setTasks(res.data.tasks);
             })
             .catch(err => console.log(err))
-    });
+    }, []);
+
+
+    const updateTasks = newTask => {
+        setTasks([...tasks, newTask])
+    };
 
     const updateUsername = username => {
         axios.put(url, {username})
@@ -39,7 +45,7 @@ const UserPage = (props) => {
     const deleteUser = username => {
         axios.delete(url, {username})
             .then(props.history.push('/'))
-    }
+    };
 
     const handleSubmit = e => {
         e.preventDefault();
@@ -51,6 +57,8 @@ const UserPage = (props) => {
         let confirm = window.confirm('Are you sure?');
         if (confirm === true) deleteUser(username)
     };
+
+    console.log(tasks)
 
     return (
         <Layout>
@@ -66,9 +74,8 @@ const UserPage = (props) => {
                 <Input type={'text'} onChange={e => setNewUsername(e.target.value)}/>
                 <Button>Submit</Button>
             </Form>}
-            <div>
-                {user && user.tasks.map(task => <TaskList key={task.id} task={task.description}/>)}
-            </div>
+            {tasks && tasks.map(task => <TaskList key={task.id} task={task.description}/>)}
+            {user && <AddTask id={user.id} updateTasks={updateTasks}/>}
         </Layout>
     )
 };

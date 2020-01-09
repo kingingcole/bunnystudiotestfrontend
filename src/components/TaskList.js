@@ -12,7 +12,7 @@ const TaskList = ({task}) => {
 
 const ListWrapper = styled.p`
     background: #efefef;
-    padding: 10px;
+    padding: 10px 0;
     margin: 10px auto;
     max-width: 1000px;
     display: block;
